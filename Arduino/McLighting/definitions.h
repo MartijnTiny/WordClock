@@ -1,4 +1,4 @@
-//#define USE_WS2812FX_DMA 0      // 0 = Used PIN is ignored & set to RX/GPIO3; 1 = Used PIN is ignored & set to D4/GPIO2; 2 = Uses PIN is ignored & set to TX/GPIO1;  Uses WS2812FX, see: https://github.com/kitesurfer1404/WS2812FX
+#define USE_WS2812FX_DMA 0      // 0 = Used PIN is ignored & set to RX/GPIO3; 1 = Used PIN is ignored & set to D4/GPIO2; 2 = Uses PIN is ignored & set to TX/GPIO1;  Uses WS2812FX, see: https://github.com/kitesurfer1404/WS2812FX
 #if defined(USE_WS2812FX_DMA)
   #define MAXLEDS 384           // due to memory limit of esp8266 at the moment only 384 leds are supported in DMA Mode. More can crash if mqtt is used.
 #else
@@ -14,7 +14,7 @@
 
 char HOSTNAME[65] = "WordClock"; // Friedly hostname  is configurable just for the start. Hostname should not contain spaces as this can break Home Assistant discovery if used.
 
-#define ENABLE_OTA 1                  // If defined, enable Arduino OTA code. If set to 0 enable Arduino OTA code, if set to 1 enable ESP8266HTTPUpdateServer OTA code.
+#define ENABLE_OTA 0                  // If defined, enable Arduino OTA code. If set to 0 enable Arduino OTA code, if set to 1 enable ESP8266HTTPUpdateServer OTA code.
 #define ENABLE_MQTT 1                 // If defined use MQTT OR AMQTT, if set to 0 enable MQTT client code, see: https://github.com/toblum/McLighting/wiki/MQTT-API, if set to 1, enable Async MQTT code, see: https://github.com/marvinroger/async-mqtt-client
 //#define ENABLE_MQTT_HOSTNAME_CHIPID   // Uncomment/comment to add ESPChipID to end of MQTT hostname
 #define ENABLE_HOMEASSISTANT          // If defined, enable Homeassistant integration, ENABLE_MQTT must be active
@@ -133,9 +133,9 @@ uint32_t autoParams[][6] = {   // main_color, back_color, xtra_color, speed, mod
 
 // List of all color modes
 #if defined(ENABLE_LEGACY_ANIMATIONS)
-  enum MODE {OFF, AUTO, CLOCK, TEST, TV, E131, CUSTOM, HOLD, SET_ALL, SET_MODE, SET_COLOR, SET_SPEED, SET_BRIGHTNESS, INIT_STRIP, WIPE, RAINBOW, RAINBOWCYCLE, THEATERCHASE, TWINKLERANDOM, THEATERCHASERAINBOW};
+  enum MODE {OFF, AUTO, TV, E131, CUSTOM, HOLD, SET_ALL, SET_MODE, SET_COLOR, SET_SPEED, SET_BRIGHTNESS, INIT_STRIP, WIPE, RAINBOW, RAINBOWCYCLE, THEATERCHASE, TWINKLERANDOM, THEATERCHASERAINBOW, TEST, CLOCK};
 #else
-  enum MODE {OFF, AUTO, CLOCK, TEST, TV, E131, CUSTOM, HOLD, SET_ALL, SET_MODE, SET_COLOR, SET_SPEED, SET_BRIGHTNESS, INIT_STRIP};
+  enum MODE {OFF, AUTO, TV, E131, CUSTOM, HOLD, SET_ALL, SET_MODE, SET_COLOR, SET_SPEED, SET_BRIGHTNESS, INIT_STRIP, TEST, CLOCK};
 #endif
 MODE mode = CLOCK;        // Standard mode that is active when software starts
 MODE prevmode = mode;

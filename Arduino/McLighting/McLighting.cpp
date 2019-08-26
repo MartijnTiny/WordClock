@@ -340,7 +340,7 @@ void initStrip(uint16_t stripSize = WS2812FXStripSettings.stripSize, char RGBOrd
   #endif
   strip->setBrightness(brightness);
 //parameters: index, start, stop, mode, color, speed, options
-  strip->setSegment(0,  0,  stripSize - 1, ws2812fx_mode, hex_colors, convertSpeed(ws2812fx_speed), fxoptions);
+  strip->setSegment(0,  2,  stripSize - 1, ws2812fx_mode, hex_colors, convertSpeed(ws2812fx_speed), fxoptions);
 #if defined(CUSTOM_WS2812FX_ANIMATIONS)
   strip->setCustomMode(0, F("Fire 2012"), myCustomEffect0);
 //strip->setCustomMode(1, F("CustEffect"), myCustomEffect1);
@@ -685,6 +685,13 @@ void setup() {
   DBG_OUTPUT_PORT.println("/upload to upload the webpages first.");
 
   DBG_OUTPUT_PORT.println("");
+
+  // ***************************************************************************
+  // Setup: NTP Time check
+  // ***************************************************************************
+  //CheckTime.attach(NTPPOLLTIME,NTPCall);
+  setSyncProvider(getNtpTime);
+  setSyncInterval(NTPPOLLTIME);
 
   // ***************************************************************************
   // Setup: WebSocket server

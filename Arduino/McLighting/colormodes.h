@@ -69,6 +69,7 @@ extern const long oneSecondDelay ;
 
 void fastTest() {
   if (millis() >= waitUntilFastTest) {
+    strip->strip_clear();
     DBG_OUTPUT_PORT.print("TESTMODE");
     waitUntilFastTest = millis();
     if (testMinutes >= 60) {
