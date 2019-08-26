@@ -1,5 +1,12 @@
+#include <Arduino.h>
 #include "definitions.h"
 #include "version.h"
+
+// ***************************************************************************
+// Missing Function declarations
+// ***************************************************************************
+
+void initMqtt();
 
 // ***************************************************************************
 // Load libraries for: WebServer / WiFiManager / WebSockets
@@ -20,6 +27,12 @@
 #include <WebSockets.h>            //https://github.com/Links2004/arduinoWebSockets
 #include <WebSocketsServer.h>
   
+//NTP time includes
+#include <Time.h>
+#include <TimeLib.h>
+#include <Timezone.h> 
+#include "NTPTime.h"
+
 #if defined(ENABLE_BUTTON_GY33)
 // ***************************************************************************
 // Load libraries for GY33 and initialize color sensor
@@ -252,6 +265,19 @@ void saveConfigCallback () {
 // Include: Request handlers
 // ***************************************************************************
 #include "request_handlers.h"
+
+#include "clockface.h"
+#include "colormodes.h"
+
+//global vars for testing clock modes
+const long oneSecondDelay = 1000;
+unsigned long waitUntilFastTest = 0;
+int testHours = 0;
+int testMinutes = 0;
+
+time_t prevDisplay = 0; // when the digital clock was displayed
+unsigned long prevRainbow = 0; // when the digital clock was displayed
+
 
 #if defined(ENABLE_TV)
 // ***************************************************************************
@@ -795,6 +821,20 @@ void loop() {
       #endif
     }
   #endif
+
+  if (mode == CLOCK) {
+    Clock(ws2812fx_speed);
+    #if defined(ENABLE_MQTT)
+        if (prevmode != mode) { snprintf(mqtt_buf, sizeof(mqtt_buf), "OK =clock", ""); }
+    #endif
+  }
+  if (mode == TEST) {
+    fastTest();
+    #if defined(ENABLE_MQTT)
+        if (prevmode != mode) { snprintf(mqtt_buf, sizeof(mqtt_buf), "OK =test", ""); }
+    #endif
+  }
+
   
   #if defined(ENABLE_E131)
     if (mode == E131) {

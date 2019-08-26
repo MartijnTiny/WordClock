@@ -481,6 +481,12 @@ void handleSetNamedMode(uint8_t * mypayload) {
       mode = TV;
     }
   #endif
+  if (strcmp((char *) &mypayload[1], "clock") == 0) {
+      mode = CLOCK;
+    }
+  if (strcmp((char *) &mypayload[1], "test") == 0) {
+      mode = TEST;
+    }
 
   #if defined(ENABLE_E131)
     if (strcmp((char *) &mypayload[1], "e131") == 0) {
@@ -534,6 +540,12 @@ void handleSetWS2812FXMode(uint8_t * mypayload) {
     
     if (strcmp((char *) &mypayload[1], "auto") == 0) {
       mode = AUTO;
+    }
+    if (strcmp((char *) &mypayload[1], "clock") == 0) {
+      mode = CLOCK;
+    }
+    if (strcmp((char *) &mypayload[1], "test") == 0) {
+      mode = TEST;
     }
     
     #if defined(ENABLE_TV)
@@ -638,6 +650,12 @@ char * listModesJSON() {
   objecttv["mode"] = "tv";
   objecttv["name"] = "TV";
   #endif
+  JsonObject objectclock = root.createNestedObject();
+  objectclock["mode"] = "clock";
+  objectclock["name"] = "CLOCK";
+  JsonObject objecttest = root.createNestedObject();
+  objecttest["mode"] = "test";
+  objecttest["name"] = "TEST";
   #if defined(ENABLE_E131)
   JsonObject objecte131 = root.createNestedObject();
   objecte131["mode"] = "e131";
@@ -1241,6 +1259,12 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t lenght
           if(effectString == "AUTO"){
             mode = AUTO;
           }
+          if(effectString == "CLOCK"){
+            mode = CLOCK;
+          }
+          if(effectString == "TEST"){
+            mode = TEST;
+          }
         #endif
         #if defined(ENABLE_TV) and defined(ENABLE_HOMEASSISTANT)
           if(effectString == "TV"){
@@ -1347,6 +1371,8 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t lenght
             JsonArray effect_list = root.createNestedArray("effect_list");
             effect_list.add("OFF");
             effect_list.add("AUTO");
+            effect_list.add("CLOCK");
+            effect_list.add("TEST");            
             #if defined(ENABLE_TV)
               effect_list.add("TV");
             #endif
@@ -1460,6 +1486,8 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t lenght
           JsonArray effect_list = root.createNestedArray("effect_list");
           effect_list.add("OFF");
           effect_list.add("AUTO");
+          effect_list.add("CLOCK");
+          effect_list.add("TEST");
           #if defined(ENABLE_TV)
             effect_list.add("TV");
           #endif
