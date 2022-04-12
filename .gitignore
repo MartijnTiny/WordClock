@@ -10,3 +10,4 @@ lib/readme.txt
 .gcc-flags.json
 
 .vscode/*
+.pio/libdeps/nodemcuv2/GY33_MCU/
